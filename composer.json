@@ -1,13 +1,21 @@
 {
     "name": "darvis/api-x",
-    "description": "Post text and images to X (Twitter) from Laravel: a small API client, an artisan command and a local MCP server for AI agents.",
+    "description": "Post to X (Twitter) from Laravel: posts with an image through the X API v2, a setup wizard, an artisan command and an MCP server so Claude and other AI agents can post for you.",
     "keywords": [
         "laravel",
         "x",
         "twitter",
         "x-api",
+        "twitter-api",
+        "tweet",
+        "post-to-x",
+        "social-media",
+        "oauth1",
         "mcp",
-        "social",
+        "model-context-protocol",
+        "laravel-mcp",
+        "ai-agent",
+        "claude",
         "laravel-boost"
     ],
     "type": "library",
@@ -21,7 +29,8 @@
     ],
     "support": {
         "issues": "https://github.com/ArvidDeJong/api-x/issues",
-        "source": "https://github.com/ArvidDeJong/api-x"
+        "source": "https://github.com/ArvidDeJong/api-x",
+        "docs": "https://arviddejong.github.io/api-x/"
     },
     "require": {
         "php": "^8.2",

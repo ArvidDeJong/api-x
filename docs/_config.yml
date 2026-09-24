@@ -18,7 +18,7 @@ package:
   license_url: https://github.com/ArvidDeJong/api-x/blob/main/LICENSE
   requires: PHP 8.2+, Laravel 11, 12 or 13; an X developer app with Read and Write permissions and API credit; laravel/mcp for the MCP server
   platforms: [Laravel]
-  keywords: [laravel, x, twitter, x api, post to x, tweet with image, mcp, model context protocol, ai agent, social media]
+  keywords: [laravel, x, twitter, x api, twitter api, tweet, post to x, tweet with image, social media, mcp, model context protocol, ai agent, claude]
 
 # Developer credit in the footer and the structured data.
 developer:

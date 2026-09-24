@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-09-24
+
+First release.
+
 ### Added
 
 - `XClient::post($text, $image, $dryRun)` posts a text with one optional image (local path or URL, JPEG, PNG, GIF or WebP up to 5 MB) through the X API v2, signed with OAuth 1.0a user context keys.
@@ -19,3 +23,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `php artisan x:post {text} --image= --dry-run`.
 - A local MCP server with the `post-update` tool, registered as `php artisan mcp:start x` when `laravel/mcp` is installed.
 - Laravel Boost guideline and `api-x-development` skill.
+
+[Unreleased]: https://github.com/ArvidDeJong/api-x/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/ArvidDeJong/api-x/releases/tag/v1.0.0
