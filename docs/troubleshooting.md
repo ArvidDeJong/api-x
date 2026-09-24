@@ -18,7 +18,7 @@ Every failure is a `Darvis\ApiX\Exceptions\XException`. The MCP tool returns the
 | `The daily limit of 10 posts is reached. Raise X_DAILY_LIMIT or try again tomorrow.` | The cap for today is used. | Wait, or raise the limit. |
 | `The daily limit needs a working cache, and the cache store failed. With CACHE_STORE=database run php artisan migrate, or set X_CACHE_STORE=file.` | The cache store that counts posts fails, usually a missing `cache` table. | Run `php artisan migrate`, or count in another store with `X_CACHE_STORE=file`. |
 | `X credentials are missing. Set X_CONSUMER_KEY, X_CONSUMER_SECRET, X_ACCESS_TOKEN and X_ACCESS_TOKEN_SECRET.` | One of the four keys is empty. | Fill in all four and clear a cached config with `php artisan config:clear`. |
-| `The image could not be read: <path>` | The file does not exist or the URL did not answer with content. | Use an absolute path or a public URL. |
+| `The image could not be read: <path or URL> (HTTP 429)` | The file does not exist, or the URL did not answer with an image; the reason in brackets says why. GitHub's release cards (opengraph.githubassets.com) answer 429 Too Many Requests now and then. | Use an absolute path, or wait and try the URL again. |
 | `The image type text/plain is not supported; use JPEG, PNG, GIF or WebP.` | The file is not an image X accepts. | Convert it. |
 | `The image is 7.2 MB; X accepts at most 5 MB.` | The image is too large. | Resize or compress it. |
 

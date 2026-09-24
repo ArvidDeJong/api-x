@@ -42,9 +42,9 @@ class XException extends RuntimeException
         return new self('X credentials are missing. Set X_CONSUMER_KEY, X_CONSUMER_SECRET, X_ACCESS_TOKEN and X_ACCESS_TOKEN_SECRET.');
     }
 
-    public static function imageNotFound(string $image): self
+    public static function imageNotFound(string $image, ?string $reason = null): self
     {
-        return new self("The image could not be read: {$image}");
+        return new self("The image could not be read: {$image}".($reason === null ? '' : " ({$reason})"));
     }
 
     public static function unsupportedImage(string $mime): self

@@ -209,3 +209,9 @@ it('counts in the configured cache store', function () {
 
     cache()->store('file')->forget('api_x:posts:'.now()->toDateString());
 });
+
+it('says why an image URL could not be read', function () {
+    Http::fake(['opengraph.githubassets.com/*' => Http::response('Too many requests, please try again later.', 429)]);
+
+    app(XClient::class)->post('Card', 'https://opengraph.githubassets.com/1/ArvidDeJong/api-x', dryRun: true);
+})->throws(XException::class, 'The image could not be read: https://opengraph.githubassets.com/1/ArvidDeJong/api-x (HTTP 429)');

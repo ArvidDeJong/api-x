@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-09-24
+
+### Changed
+
+- An image URL that does not answer now says why in the message, for example `The image could not be read: https://… (HTTP 429)`, and a connection error there is an `XException` too.
+
 ## [1.1.0] - 2026-09-24
 
 ### Added
@@ -35,6 +41,7 @@ First release.
 - A local MCP server with the `post-update` tool, registered as `php artisan mcp:start x` when `laravel/mcp` is installed.
 - Laravel Boost guideline and `api-x-development` skill.
 
-[Unreleased]: https://github.com/ArvidDeJong/api-x/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/ArvidDeJong/api-x/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/ArvidDeJong/api-x/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/ArvidDeJong/api-x/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/ArvidDeJong/api-x/releases/tag/v1.0.0

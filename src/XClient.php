@@ -162,8 +162,17 @@ class XClient
     protected function loadImage(string $image): array
     {
         if (preg_match('~^https?://~i', $image) === 1) {
-            $response = Http::timeout(XConfig::timeout())->get($image);
-            $contents = $response->successful() ? $response->body() : '';
+            try {
+                $response = Http::timeout(XConfig::timeout())->get($image);
+            } catch (Throwable $exception) {
+                throw XException::imageNotFound($image, $exception->getMessage());
+            }
+
+            if (! $response->successful()) {
+                throw XException::imageNotFound($image, 'HTTP '.$response->status());
+            }
+
+            $contents = $response->body();
         } else {
             $contents = is_file($image) && is_readable($image) ? (string) file_get_contents($image) : '';
         }
