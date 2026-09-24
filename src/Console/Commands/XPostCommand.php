@@ -19,11 +19,13 @@ class XPostCommand extends Command
 
     public function handle(XClient $client): int
     {
+        // Read through the input directly: Larastan versions disagree on the type argument() returns.
+        $text = $this->input->getArgument('text');
         $image = $this->option('image');
 
         try {
             $result = $client->post(
-                (string) $this->argument('text'),
+                is_string($text) ? $text : '',
                 is_string($image) ? $image : null,
                 (bool) $this->option('dry-run'),
             );
