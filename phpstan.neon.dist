@@ -3,7 +3,7 @@ includes:
 
 parameters:
     level: 8
-    # The ignored macro errors depend on the Larastan version; don't fail where one does not occur.
+    # These false positives depend on the Larastan version; don't fail where one does not occur.
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         # Livewire adds these as macros; PHPStan cannot see macros on View and Route.
@@ -15,5 +15,10 @@ parameters:
             identifier: staticMethod.notFound
             message: '#Route::livewire\(\)#'
             path: src/XServiceProvider.php
+        # Larastan cannot resolve views registered under a package namespace.
+        -
+            identifier: argument.type
+            message: '#view-string\|null, string given#'
+            path: src/Livewire/XPage.php
     paths:
         - src
