@@ -94,10 +94,12 @@ In a script, pass options and `--no-interaction`; the command then only changes 
 | `api_url` | `X_API_URL` | `https://api.x.com` | Base URL of the X API. |
 | `cache_store` | `X_CACHE_STORE` | default store | Cache store that counts the posts per day. With the `database` store the cache table must exist. |
 | `credentials.*` | `X_CONSUMER_KEY`, `X_CONSUMER_SECRET`, `X_ACCESS_TOKEN`, `X_ACCESS_TOKEN_SECRET` | none | The four OAuth 1.0a keys. |
+| `history.enabled` | `X_HISTORY_ENABLED` | `true` | Store every post that went to X in `x_posts`. |
 | `daily_limit` | `X_DAILY_LIMIT` | `10` | Most posts per day, counted in the cache. `0` switches the limit off. |
 | `dry_run` | `X_DRY_RUN` | `false` | Check every post but never send one. |
 | `mcp.enabled` | `X_MCP_ENABLED` | `true` | Register the MCP server when `laravel/mcp` is installed. |
 | `mcp.handle` | `X_MCP_HANDLE` | `x` | The handle for `php artisan mcp:start`. |
 | `timeout` | `X_TIMEOUT` | `30` | Timeout in seconds for a call to X. |
+| `ui.*` | `X_UI_*` | see [Page](page.md) | The page to post from the browser. |
 
 Read settings in your own code through `Darvis\ApiX\Support\XConfig`, so your code and the package agree on the defaults.

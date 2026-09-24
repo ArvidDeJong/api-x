@@ -21,6 +21,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - [PostText](src/Support/PostText.php) counts length and finds links. The link pattern decides what gets refused while `allow_links` is off; a false negative costs money, a false positive only a refused post, so err towards refusing.
 - `laravel/mcp` is a dev dependency and a suggestion, not a requirement: `laravel/mcp` needs `illuminate/json-schema` 12.41 or higher, and a hard requirement would lock out Laravel 11 hosts. The provider registers the server only when the `Registrar` class exists.
 - [XInstallCommand](src/Console/Commands/XInstallCommand.php) is the setup wizard, built like `mailtrap:install`: one method per step, every answer written to `.env` at once through [EnvironmentFile](src/Support/EnvironmentFile.php) and applied to the running config, a summary and one star question at the end of the interactive run only. Without interaction it touches only what the options name. It never posts for real; the last step is a dry run.
+- [XPage](src/Livewire/XPage.php) is the page, built like the Mailtrap inbox: registered only when Livewire is bound, the `postToX` gate in [AuthorizeXPage](src/Http/Middleware/AuthorizeXPage.php) as persistent middleware and again in `boot()`, `render()` and `post()`. The default gate allows `local` only; never make it more permissive.
+- `XClient::record()` writes the history after X answered. It reports a database failure and carries on: the history never decides whether a post goes out.
 - The daily count is `api_x:posts:<date>` in the default cache store. Only a successful post counts.
 
 ## Conventions specific to this package

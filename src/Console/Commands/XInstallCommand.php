@@ -471,6 +471,7 @@ class XInstallCommand extends Command
         $this->components->bulletList([
             '.env is not in git: run this command on every machine that posts.',
             'Post from the terminal: php artisan x:post "Hello" --image=path/to/image.png',
+            'Post from the browser: '.rtrim((string) config('app.url'), '/').XConfig::uiPath().' (needs Livewire and Flux; run php artisan migrate for the history)',
         ]);
 
         outro(collect($this->results)->contains(fn (array $result): bool => in_array($result[1], ['todo', 'fail'], true))

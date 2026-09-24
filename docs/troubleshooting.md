@@ -1,7 +1,7 @@
 ---
 title: "Troubleshooting"
 description: "Every message darvis/api-x gives when a post to X is refused, quoted literally, with the cause and the fix, plus the HTTP errors X itself returns most often."
-nav_order: 7
+nav_order: 8
 ---
 
 # Troubleshooting
@@ -22,9 +22,15 @@ Every failure is a `Darvis\ApiX\Exceptions\XException`. The MCP tool returns the
 | `The image type text/plain is not supported; use JPEG, PNG, GIF or WebP.` | The file is not an image X accepts. | Convert it. |
 | `The image is 7.2 MB; X accepts at most 5 MB.` | The image is too large. | Resize or compress it. |
 
+## The page answers 403
+
+Only visitors the `postToX` gate allows get in; without a gate of your own that is the local environment only. Define the gate, see [Page](page.md).
+
 ## Messages from X
 
-These start with `X refused to create the post`, `X refused to upload the image` or, from the setup wizard, `X refused to check the keys`, followed by the HTTP status and the reason X gave.
+`The request to X failed: <reason>` means X could not be reached, for example a timeout or no network.
+
+The others start with `X refused to create the post`, `X refused to upload the image` or, from the setup wizard, `X refused to check the keys`, followed by the HTTP status and the reason X gave.
 
 | Status | Usual cause |
 | --- | --- |

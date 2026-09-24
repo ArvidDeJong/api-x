@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- A Livewire page at `/x` to post from the browser, with a counter that counts the way X does, an image upload or URL and a dry run switch. Registered when Livewire and Flux are installed; only visitors the `postToX` gate allows get in, by default the local environment only.
+- History: every post that went to X is stored in the new `x_posts` table (`Darvis\ApiX\Models\XPost`), also from `x:post` and the MCP tool, and listed on the page. Run `php artisan migrate`. `X_HISTORY_ENABLED=false` switches it off.
+
+### Changed
+
+- A timeout or connection error while posting is now an `XException` ("The request to X failed: …") instead of a Laravel `ConnectionException`.
+
 ## [1.0.0] - 2026-09-24
 
 First release.

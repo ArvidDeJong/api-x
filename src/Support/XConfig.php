@@ -75,6 +75,14 @@ final class XConfig
     }
 
     /**
+     * Whether posts that went to X are stored in the x_posts table.
+     */
+    public static function historyEnabled(): bool
+    {
+        return (bool) config('api_x.history.enabled', true);
+    }
+
+    /**
      * Whether the local MCP server is registered (only when laravel/mcp is installed).
      */
     public static function mcpEnabled(): bool
@@ -96,5 +104,49 @@ final class XConfig
     public static function timeout(): int
     {
         return (int) config('api_x.timeout', 30);
+    }
+
+    /**
+     * Whether the page is registered (only when Livewire is loaded).
+     */
+    public static function uiEnabled(): bool
+    {
+        return (bool) config('api_x.ui.enabled', true);
+    }
+
+    /**
+     * Blade layout the page is rendered in.
+     */
+    public static function uiLayout(): string
+    {
+        return (string) config('api_x.ui.layout', 'layouts::app');
+    }
+
+    /**
+     * Middleware the page route runs through, before the gate.
+     *
+     * @return array<int, string>
+     */
+    public static function uiMiddleware(): array
+    {
+        $middleware = config('api_x.ui.middleware', ['web']);
+
+        return array_values(array_filter(array_map('strval', (array) $middleware)));
+    }
+
+    /**
+     * Rows per page in the history.
+     */
+    public static function uiPerPage(): int
+    {
+        return max(1, (int) config('api_x.ui.per_page', 25));
+    }
+
+    /**
+     * The page as a path with a leading slash.
+     */
+    public static function uiPath(): string
+    {
+        return '/'.ltrim((string) config('api_x.ui.route', 'x'), '/');
     }
 }

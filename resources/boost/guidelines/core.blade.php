@@ -24,4 +24,5 @@ try {
 @endverbatim
 
 - With `laravel/mcp` installed, `php artisan mcp:start x` starts a local MCP server with the `post-update` tool (`text`, `image`, `dry_run`). A post from the tool goes out immediately and publicly; do a dry run first when unsure.
+- With Livewire and Flux installed there is a page at `/x` (route `api-x.page`) to post and to see the history in the `x_posts` table (`Darvis\ApiX\Models\XPost`). Access goes through the `postToX` gate, local only by default; define that gate for production instead of loosening the middleware.
 - In tests, fake `api.x.com/2/media/upload` and `api.x.com/2/tweets` with `Http::fake()`, and use the `array` cache store so the daily limit starts at zero.

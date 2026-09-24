@@ -68,6 +68,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | History
+    |--------------------------------------------------------------------------
+    |
+    | Store every post that went to X (sent or refused by X) in the x_posts
+    | table, so the page shows what the command and the MCP tool posted too.
+    |
+    */
+
+    'history' => [
+        'enabled' => (bool) env('X_HISTORY_ENABLED', true),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | MCP server
     |--------------------------------------------------------------------------
     |
@@ -82,5 +96,27 @@ return [
     ],
 
     'timeout' => (int) env('X_TIMEOUT', 30),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Page
+    |--------------------------------------------------------------------------
+    |
+    | A Livewire page to post and to see the history, registered when Livewire
+    | and Flux are installed. Only visitors the postToX gate allows get in;
+    | without a gate of your own that is the local environment only.
+    |
+    */
+
+    'ui' => [
+        'enabled' => (bool) env('X_UI_ENABLED', true),
+        // Blade layout the page is rendered in.
+        'layout' => env('X_UI_LAYOUT', 'layouts::app'),
+        // Comma separated middleware, for example "web,auth".
+        'middleware' => array_values(array_filter(array_map('trim', explode(',', (string) env('X_UI_MIDDLEWARE', 'web'))))),
+        'per_page' => (int) env('X_UI_PER_PAGE', 25),
+        // Path of the page, for example https://app.test/x
+        'route' => env('X_UI_ROUTE', 'x'),
+    ],
 
 ];

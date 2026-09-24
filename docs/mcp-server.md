@@ -1,7 +1,7 @@
 ---
 title: "MCP server"
 description: "Let Claude or another AI agent post to X through the local MCP server of darvis/api-x: the handle, the post-update tool and how to add it to your agent."
-nav_order: 5
+nav_order: 6
 ---
 
 # MCP server

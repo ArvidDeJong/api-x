@@ -24,5 +24,8 @@
 - q: How do I stop an agent from posting too much?
   a: "`X_DAILY_LIMIT` caps the number of posts per day (10 by default, counted in the cache; 0 switches it off). `X_DRY_RUN=true` runs every check without sending anything. Both apply to the class, the command and the MCP tool alike."
 
+- q: Can I post from the browser and see what was posted?
+  a: "Yes. With Livewire and Flux installed the package adds a page at `/x` with a form and the history of every post, also the ones from the command and the MCP tool. Only visitors the `postToX` gate allows get in; without a gate of your own that is the local environment only. Run `php artisan migrate` for the history."
+
 - q: Is darvis/api-x an official X package?
   a: No. It is an independent open-source package by ARVID.NL, not made or endorsed by X Corp. Problems with your X app, billing or the API itself belong with X.

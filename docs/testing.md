@@ -1,7 +1,7 @@
 ---
 title: "Testing"
 description: "Test code that posts to X with darvis/api-x without calling X: fake the two endpoints with Http::fake(), use dry runs and test the MCP tool directly."
-nav_order: 6
+nav_order: 7
 ---
 
 # Testing

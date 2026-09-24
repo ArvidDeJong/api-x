@@ -22,6 +22,7 @@ A developer who wants to share what they are building without leaving the editor
 - Refuses links unless you allow them, because X bills posts with a link at a much higher rate
 - Caps the number of posts per day and offers a dry run
 - Registers a local MCP server with one tool, when `laravel/mcp` is installed
+- Adds a page to post from the browser, with the history of every post, when Livewire and Flux are installed
 
 ## What it does not do
 
@@ -33,6 +34,7 @@ A developer who wants to share what they are building without leaving the editor
 - [Installation & configuration](installation.md): the X app, the keys and every config value
 - [Quick start](quickstart.md): your first post in five minutes
 - [Posting](posting.md): text, images, links, the daily limit and dry runs
+- [Page](page.md): post from the browser and see the history
 - [MCP server](mcp-server.md): let Claude or another agent post for you
 - [Testing](testing.md): test code that posts, without calling X
 - [Troubleshooting](troubleshooting.md): every message the package gives, with the fix

@@ -3,5 +3,17 @@ includes:
 
 parameters:
     level: 8
+    # The ignored macro errors depend on the Larastan version; don't fail where one does not occur.
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        # Livewire adds these as macros; PHPStan cannot see macros on View and Route.
+        -
+            identifier: method.notFound
+            message: '#View::layout\(\)#'
+            path: src/Livewire/XPage.php
+        -
+            identifier: staticMethod.notFound
+            message: '#Route::livewire\(\)#'
+            path: src/XServiceProvider.php
     paths:
         - src

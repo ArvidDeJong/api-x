@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Darvis\ApiX;
 
 use Darvis\ApiX\Exceptions\XException;
+use Darvis\ApiX\Models\XPost;
 use Darvis\ApiX\Support\OAuth1;
 use Darvis\ApiX\Support\PostText;
 use Darvis\ApiX\Support\XConfig;
@@ -50,30 +51,27 @@ class XClient
         }
 
         $oauth = $this->oauth();
+        $mediaId = null;
 
-        $mediaId = $media === null ? null : $this->uploadMedia($oauth, $media);
+        try {
+            $mediaId = $media === null ? null : $this->uploadMedia($oauth, $media);
+            $id = $this->createPost($oauth, $text, $mediaId);
+        } catch (Throwable $exception) {
+            // A timeout or a refused connection arrives here as well; store it like a refusal.
+            $failure = $exception instanceof XException ? $exception : XException::requestError($exception);
 
-        $payload = ['text' => $text];
-        if ($mediaId !== null) {
-            $payload['media'] = ['media_ids' => [$mediaId]];
-        }
+            $this->record($text, $image, XPost::STATUS_FAILED, mediaId: $mediaId, error: $failure->getMessage());
 
-        $url = XConfig::apiUrl().'/2/tweets';
-        $response = Http::timeout(XConfig::timeout())
-            ->withHeaders(['Authorization' => $oauth->header('POST', $url)])
-            ->asJson()
-            ->post($url, $payload);
-
-        if (! $response->successful() || ! is_string($response->json('data.id'))) {
-            throw XException::requestFailed('create the post', $response);
+            throw $failure;
         }
 
         $this->countPost();
+        $this->record($text, $image, XPost::STATUS_SENT, xId: $id, mediaId: $mediaId);
 
         return new PostResult(
             $text,
             dryRun: false,
-            id: $response->json('data.id'),
+            id: $id,
             mediaId: $mediaId,
             remainingToday: $remaining === null ? null : $remaining - 1,
         );
@@ -91,9 +89,15 @@ class XClient
     {
         $url = XConfig::apiUrl().'/2/users/me';
 
-        $response = Http::timeout(XConfig::timeout())
-            ->withHeaders(['Authorization' => $this->oauth()->header('GET', $url)])
-            ->get($url);
+        $authorization = $this->oauth()->header('GET', $url);
+
+        try {
+            $response = Http::timeout(XConfig::timeout())
+                ->withHeaders(['Authorization' => $authorization])
+                ->get($url);
+        } catch (Throwable $exception) {
+            throw XException::requestError($exception);
+        }
 
         $data = $response->json('data');
 
@@ -203,6 +207,57 @@ class XClient
         }
 
         return $id;
+    }
+
+    /**
+     * Create the post and return its id.
+     *
+     * @throws XException
+     */
+    protected function createPost(OAuth1 $oauth, string $text, ?string $mediaId): string
+    {
+        $payload = ['text' => $text];
+        if ($mediaId !== null) {
+            $payload['media'] = ['media_ids' => [$mediaId]];
+        }
+
+        $url = XConfig::apiUrl().'/2/tweets';
+        $response = Http::timeout(XConfig::timeout())
+            ->withHeaders(['Authorization' => $oauth->header('POST', $url)])
+            ->asJson()
+            ->post($url, $payload);
+
+        $id = $response->json('data.id');
+
+        if (! $response->successful() || ! is_string($id)) {
+            throw XException::requestFailed('create the post', $response);
+        }
+
+        return $id;
+    }
+
+    /**
+     * Store a post that went to X. A missing table or any other database problem is reported
+     * and never decides whether a post goes out.
+     */
+    protected function record(string $text, ?string $image, string $status, ?string $xId = null, ?string $mediaId = null, ?string $error = null): void
+    {
+        if (! XConfig::historyEnabled()) {
+            return;
+        }
+
+        try {
+            XPost::create([
+                'text' => $text,
+                'image' => $image === null || trim($image) === '' ? null : mb_substr(trim($image), 0, 255),
+                'status' => $status,
+                'x_id' => $xId,
+                'media_id' => $mediaId,
+                'error' => $error,
+            ]);
+        } catch (Throwable $exception) {
+            report($exception);
+        }
     }
 
     /**

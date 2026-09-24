@@ -18,6 +18,7 @@ Unofficial and independent: this is not an official X product and is not affilia
 - One call to post a text with a JPEG, PNG, GIF or WebP image, from a local path or a URL
 - `php artisan x:post` for scripts and the terminal
 - A local MCP server with a `post-update` tool, registered when `laravel/mcp` is installed
+- A page to post from the browser with the history of every post, when Livewire and Flux are installed
 - Checks the text the way X counts it before anything is sent or billed
 - Refuses links by default, because X bills posts with a link at a much higher rate
 - A daily limit and a dry run mode, so an agent cannot run up a bill
@@ -29,6 +30,7 @@ Unofficial and independent: this is not an official X product and is not affilia
 - Laravel 11, 12 or 13
 - An X developer app with **Read and Write** permissions and API credit
 - `laravel/mcp` 1.0 or higher for the MCP server (Laravel Boost installs it)
+- `livewire/livewire` and `livewire/flux` (free edition) for the page
 
 ## Installation
 
