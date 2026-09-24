@@ -1,0 +1,42 @@
+title: darvis/api-x
+description: Laravel package that posts text and images to X (Twitter) through the X API v2, with an artisan command and a local MCP server for AI agents.
+url: https://arviddejong.github.io
+baseurl: /api-x
+
+remote_theme: just-the-docs/just-the-docs@v0.12.0
+plugins:
+  - jekyll-remote-theme
+  - jekyll-relative-links
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Facts about the package, used by the structured data and llms.txt.
+package:
+  name: darvis/api-x
+  repository: https://github.com/ArvidDeJong/api-x
+  packagist: https://packagist.org/packages/darvis/api-x
+  license_url: https://github.com/ArvidDeJong/api-x/blob/main/LICENSE
+  requires: PHP 8.2+, Laravel 11, 12 or 13; an X developer app with Read and Write permissions and API credit; laravel/mcp for the MCP server
+  platforms: [Laravel]
+  keywords: [laravel, x, twitter, x api, post to x, tweet with image, mcp, model context protocol, ai agent, social media]
+
+# Developer credit in the footer and the structured data.
+developer:
+  company: ARVID.NL
+  url: https://arvid.nl
+
+color_scheme: light
+search_enabled: true
+heading_anchors: true
+
+aux_links:
+  GitHub: https://github.com/ArvidDeJong/api-x
+  Packagist: https://packagist.org/packages/darvis/api-x
+aux_links_new_tab: true
+
+gh_edit_link: true
+gh_edit_link_text: Edit this page on GitHub
+gh_edit_repository: https://github.com/ArvidDeJong/api-x
+gh_edit_branch: main
+gh_edit_source: docs
+gh_edit_view_mode: tree

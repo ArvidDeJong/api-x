@@ -1,0 +1,28 @@
+# Questions as people ask them to an assistant. Short, factual answers, checked against the docs.
+# Rendered on faq.md, in the FAQPage structured data and in llms.txt.
+- q: How do I post on X with an image from a Laravel application?
+  a: Install `darvis/api-x` with Composer, put the four OAuth 1.0a keys of your X app in `.env` and call `app(XClient::class)->post($text, $image)`. The image is a local path or an http(s) URL. From the command line the same post is `php artisan x:post "text" --image=path`.
+
+- q: What is darvis/api-x, and does it need an X SDK?
+  a: It is a small Laravel package that uploads one image and creates a post through the X API v2. It needs no SDK. Every call goes through Laravel's own HTTP client, so `Http::fake()` covers it in your tests.
+
+- q: Which PHP and Laravel versions does darvis/api-x support?
+  a: PHP 8.2 or higher and Laravel 11, 12 and 13. The MCP server also needs `laravel/mcp` 1.0 or higher, which Laravel Boost already installs.
+
+- q: Is there a setup wizard?
+  a: "Yes: `php artisan x:install` explains the X app, asks for the four keys, checks them with X, sets the daily limit, links and dry run, adds the MCP server to `.mcp.json` and ends with a dry run. Every answer is saved to `.env` right away."
+
+- q: Which X keys does the package need?
+  a: "The four OAuth 1.0a user context keys of your own account, from the section OAuth 1.0 Keys under Keys & Tokens in the X developer console: Consumer Key and Consumer Secret (`X_CONSUMER_KEY`, `X_CONSUMER_SECRET`) and Access Token and Access Token Secret (`X_ACCESS_TOKEN`, `X_ACCESS_TOKEN_SECRET`). The Bearer Token and the OAuth 2.0 keys are not used. Give the app Read and Write permissions before you generate the access token, otherwise the token can only read."
+
+- q: What does posting on X cost?
+  a: The package is free and MIT licensed. X bills API use per request, and a post with a link costs a lot more than a plain post. Check the current prices in the X developer portal. The package refuses links by default for that reason; set `X_ALLOW_LINKS=true` to allow them.
+
+- q: How do I let Claude or another AI agent post for me?
+  a: Install `laravel/mcp` (Laravel Boost already does) and the package registers a local MCP server with the handle `x`. Add `php artisan mcp:start x` as a stdio server to your agent. It gets one tool, `post-update`, with `text`, `image` and `dry_run`.
+
+- q: How do I stop an agent from posting too much?
+  a: "`X_DAILY_LIMIT` caps the number of posts per day (10 by default, counted in the cache; 0 switches it off). `X_DRY_RUN=true` runs every check without sending anything. Both apply to the class, the command and the MCP tool alike."
+
+- q: Is darvis/api-x an official X package?
+  a: No. It is an independent open-source package by ARVID.NL, not made or endorsed by X Corp. Problems with your X app, billing or the API itself belong with X.

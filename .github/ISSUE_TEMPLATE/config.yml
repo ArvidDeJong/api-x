@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security issue
+    url: https://github.com/ArvidDeJong/api-x/security/advisories/new
+    about: Report a vulnerability privately.
+  - name: Documentation
+    url: https://arviddejong.github.io/api-x/
+    about: Installation, X app setup, posting and the MCP server.
+  - name: Problem with the X API itself
+    url: https://devcommunity.x.com/
+    about: This is an independent package; app permissions, billing and API outages belong with X.
