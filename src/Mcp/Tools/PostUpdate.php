@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Darvis\ApiX\Mcp\Tools;
 
 use Darvis\ApiX\Exceptions\XException;
+use Darvis\ApiX\Support\XConfig;
 use Darvis\ApiX\XClient;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
@@ -25,7 +26,7 @@ class PostUpdate extends Tool
     {
         return [
             'text' => $schema->string()
-                ->description('The post text, at most 280 characters as X counts them. No links unless the app allows them.')
+                ->description('The post text, at most '.XConfig::subscription()->maxLength().' characters as X counts them. No links unless the app allows them.')
                 ->required(),
             'image' => $schema->string()
                 ->description('Optional image: an absolute local path or an http(s) URL to a JPEG, PNG, GIF or WebP of at most 5 MB.'),

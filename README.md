@@ -19,7 +19,7 @@ Unofficial and independent: this is not an official X product and is not affilia
 - `php artisan x:post` for scripts and the terminal
 - A local MCP server with a `post-update` tool, registered when `laravel/mcp` is installed
 - A page to post from the browser with the history of every post, when Livewire and Flux are installed
-- Checks the text the way X counts it before anything is sent or billed
+- Checks the text the way X counts it before anything is sent or billed, up to 25,000 characters for accounts with an X subscription
 - Refuses links by default, because X bills posts with a link at a much higher rate
 - A daily limit and a dry run mode, so an agent cannot run up a bill
 - Ships a Laravel Boost guideline and skill

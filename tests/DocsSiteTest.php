@@ -194,7 +194,7 @@ test('the site, the README and the FAQ say the package is unofficial', function 
 test('the troubleshooting page quotes every message the package throws', function () {
     $page = (string) file_get_contents(docsSitePath('troubleshooting.md'));
 
-    foreach (['The post text is empty.', 'X_ALLOW_LINKS=true to allow them.', 'Raise X_DAILY_LIMIT or try again tomorrow.', 'X credentials are missing.', 'The daily limit needs a working cache', 'The image could not be read', 'is not supported; use JPEG, PNG, GIF or WebP.', 'X accepts at most 5 MB.', 'X refused to create the post', 'X refused to upload the image', 'X refused to check the keys'] as $message) {
+    foreach (['The post text is empty.', 'With an X subscription, set X_SUBSCRIPTION to allow up to 25,000.', 'X_ALLOW_LINKS=true to allow them.', 'Raise X_DAILY_LIMIT or try again tomorrow.', 'X credentials are missing.', 'The daily limit needs a working cache', 'The image could not be read', 'is not supported; use JPEG, PNG, GIF or WebP.', 'X accepts at most 5 MB.', 'X refused to create the post', 'X refused to upload the image', 'X refused to check the keys'] as $message) {
         expect($page)->toContain($message);
     }
 });

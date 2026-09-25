@@ -19,7 +19,7 @@ The command `x:post` and the MCP tool call the same method, so the rules below a
 ## The order of checks
 
 1. The text is trimmed and must not be empty.
-2. The text must fit in 280 characters as X counts them.
+2. The text must fit in 280 characters as X counts them, or 25,000 when the account has an X subscription (see below).
 3. Without `allow_links`, the text must not contain a link.
 4. The daily limit must not be reached.
 5. The image, when given, is read and checked.
@@ -32,6 +32,18 @@ Every check runs before X is called, also in a dry run, so a dry run fails exact
 ## Text length
 
 X counts most Latin, Greek and Cyrillic characters as 1, other characters such as CJK and emoji as 2, and every link as 23, whatever its length. The package counts an emoji made of several code points per code point, so it may refuse a text with such an emoji slightly before X would.
+
+## X subscription
+
+An account with a paid X subscription (Basic, Premium or Premium+) may post up to 25,000 characters through the API; without one X stops at 280. X accepts nothing else extra through this package: every tier gets the same posting features, the differences are in verification, ads and monetisation. Tell the package which subscription the posting account has:
+
+```dotenv
+X_SUBSCRIPTION=premium
+```
+
+The values are `none` (default), `basic`, `premium` and `premium_plus`. An unknown value counts as `none`. The limit follows everywhere: `XClient::post()`, `x:post`, the MCP tool description and the counter on the page. Read it in your own code with `XConfig::subscription()->maxLength()`.
+
+Set the subscription the account really has. With a paid tier configured on an account without one, the package lets a long post through and X refuses it.
 
 ## Images
 

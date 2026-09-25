@@ -99,6 +99,16 @@ final class XConfig
     }
 
     /**
+     * The X subscription of the posting account. An unknown value counts as none, so a typo
+     * never lets a post through that X would refuse.
+     */
+    public static function subscription(): Subscription
+    {
+        return Subscription::tryFrom(strtolower(trim((string) config('api_x.subscription', 'none'))))
+            ?? Subscription::None;
+    }
+
+    /**
      * Timeout in seconds for a call to the X API.
      */
     public static function timeout(): int

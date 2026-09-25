@@ -13,7 +13,15 @@ namespace Darvis\ApiX\Support;
  */
 final class PostText
 {
+    /**
+     * The limit for an account without an X subscription.
+     */
     public const MAX_LENGTH = 280;
+
+    /**
+     * The limit for an account with any paid X subscription (Basic, Premium or Premium+).
+     */
+    public const LONG_MAX_LENGTH = 25000;
 
     private const LINK_LENGTH = 23;
 

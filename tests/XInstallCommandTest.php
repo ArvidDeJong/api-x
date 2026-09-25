@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Process;
 
 const STAR_QUESTION = 'Star darvis/api-x on GitHub? A star helps other developers find the package.';
 
+const SUBSCRIPTION_CHOICES = [
+    'none' => 'No subscription (280 characters)',
+    'basic' => 'Basic (25,000 characters)',
+    'premium' => 'Premium (25,000 characters)',
+    'premium_plus' => 'Premium+ (25,000 characters)',
+];
+
 const MODE_CHOICES = [
     'dry' => 'Dry run: check posts but send nothing (recommended to start)',
     'live' => 'Post for real',
@@ -48,6 +55,7 @@ it('walks a new user through every step and writes .env', function () {
         ->expectsQuestion('Paste the Access Token Secret', 'ats')
         ->expectsConfirmation('Check the keys with X now? X bills this as one read request.', 'yes')
         ->expectsOutputToContain('The keys belong to @arviddejong (Arvid).')
+        ->expectsChoice('Which X subscription does the account have?', 'premium', SUBSCRIPTION_CHOICES)
         ->expectsQuestion('Most posts per day', '5')
         ->expectsConfirmation('Allow posts with a link?', 'no')
         ->expectsChoice('How should posts go out?', 'dry', MODE_CHOICES)
@@ -62,6 +70,7 @@ it('walks a new user through every step and writes .env', function () {
         ->toContain('X_CONSUMER_SECRET=cs')
         ->toContain('X_ACCESS_TOKEN=123-at')
         ->toContain('X_ACCESS_TOKEN_SECRET=ats')
+        ->toContain('X_SUBSCRIPTION=premium')
         ->toContain('X_DAILY_LIMIT=5')
         ->toContain('X_ALLOW_LINKS=false')
         ->toContain('X_DRY_RUN=true');
@@ -122,6 +131,7 @@ it('installs without questions from options', function () {
         '--consumer-secret' => 'cs',
         '--access-token' => '123-at',
         '--access-token-secret' => 'ats',
+        '--subscription' => 'premium_plus',
         '--daily-limit' => '3',
         '--live' => true,
         '--no-interaction' => true,
@@ -129,11 +139,20 @@ it('installs without questions from options', function () {
 
     expect(wizardEnv())
         ->toContain('X_CONSUMER_KEY=ck')
+        ->toContain('X_SUBSCRIPTION=premium_plus')
         ->toContain('X_DAILY_LIMIT=3')
         ->toContain('X_DRY_RUN=false');
 
     Http::assertNothingSent();
     Process::assertNothingRan();
+});
+
+it('refuses a subscription X does not have', function () {
+    $this->artisan('x:install', ['--subscription' => 'gold', '--no-interaction' => true])
+        ->expectsOutputToContain('--subscription must be one of: none, basic, premium, premium_plus.')
+        ->assertFailed();
+
+    expect(wizardEnv())->toBe("APP_NAME=Test\n");
 });
 
 it('refuses a daily limit that is not a whole number', function () {

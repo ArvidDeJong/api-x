@@ -13,7 +13,8 @@ Every failure is a `Darvis\ApiX\Exceptions\XException`. The MCP tool returns the
 | Message | Cause | Fix |
 | --- | --- | --- |
 | `The post text is empty.` | The text is empty after trimming. | Send a text. |
-| `The post text counts 312 characters on X; the maximum is 280.` | Too long as X counts it. | Shorten the text. Emoji and CJK count as 2, a link as 23. |
+| `The post text counts 312 characters on X; the maximum is 280. With an X subscription, set X_SUBSCRIPTION to allow up to 25,000.` | Too long as X counts it, for an account without an X subscription. | Shorten the text. Emoji and CJK count as 2, a link as 23. With a paid X subscription, set `X_SUBSCRIPTION`. |
+| `The post text counts 25312 characters on X; the maximum is 25000.` | Too long even with an X subscription. | Shorten the text. |
 | `The post contains a link. X bills posts with a link at a much higher rate; set X_ALLOW_LINKS=true to allow them.` | The text holds a URL, `www.` or a bare domain. | Leave the link out, or allow links. |
 | `The daily limit of 10 posts is reached. Raise X_DAILY_LIMIT or try again tomorrow.` | The cap for today is used. | Wait, or raise the limit. |
 | `The daily limit needs a working cache, and the cache store failed. With CACHE_STORE=database run php artisan migrate, or set X_CACHE_STORE=file.` | The cache store that counts posts fails, usually a missing `cache` table. | Run `php artisan migrate`, or count in another store with `X_CACHE_STORE=file`. |

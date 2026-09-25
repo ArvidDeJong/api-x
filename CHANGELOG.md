@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `X_SUBSCRIPTION` (`none`, `basic`, `premium` or `premium_plus`) sets the X subscription of the posting account. With any paid tier a post may count up to 25,000 characters instead of 280, in `XClient::post()`, `x:post`, the MCP tool and the page counter. Read it with `XConfig::subscription()`, which returns the new `Darvis\ApiX\Support\Subscription` enum.
+- `x:install` asks for the subscription in a new step, and takes `--subscription=` without interaction.
+
+### Changed
+
+- A text above 280 characters on an account without a subscription now ends with a hint: `With an X subscription, set X_SUBSCRIPTION to allow up to 25,000.`
+- The MCP tool description states the length limit of the configured account instead of a fixed 280.
+
 ## [1.2.0] - 2026-09-24
 
 ### Changed

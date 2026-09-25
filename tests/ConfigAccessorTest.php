@@ -25,6 +25,7 @@ it('returns the values the config file ships', function () {
         ->and(XConfig::dryRun())->toBe($config['dry_run'])
         ->and(XConfig::mcpEnabled())->toBe($config['mcp']['enabled'])
         ->and(XConfig::mcpHandle())->toBe($config['mcp']['handle'])
+        ->and(XConfig::subscription()->value)->toBe($config['subscription'])
         ->and(XConfig::timeout())->toBe($config['timeout']);
 });
 

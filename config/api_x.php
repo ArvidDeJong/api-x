@@ -95,6 +95,19 @@ return [
         'handle' => env('X_MCP_HANDLE', 'x'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Subscription
+    |--------------------------------------------------------------------------
+    |
+    | The X subscription of the account that posts: none, basic, premium or
+    | premium_plus. With any paid tier X accepts posts up to 25,000
+    | characters instead of 280.
+    |
+    */
+
+    'subscription' => env('X_SUBSCRIPTION', 'none'),
+
     'timeout' => (int) env('X_TIMEOUT', 30),
 
     /*

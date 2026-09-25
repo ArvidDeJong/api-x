@@ -10,7 +10,10 @@
   a: PHP 8.2 or higher and Laravel 11, 12 and 13. The MCP server also needs `laravel/mcp` 1.0 or higher, which Laravel Boost already installs.
 
 - q: Is there a setup wizard?
-  a: "Yes: `php artisan x:install` explains the X app, asks for the four keys, checks them with X, sets the daily limit, links and dry run, adds the MCP server to `.mcp.json` and ends with a dry run. Every answer is saved to `.env` right away."
+  a: "Yes: `php artisan x:install` explains the X app, asks for the four keys, checks them with X, asks for the X subscription of the account, sets the daily limit, links and dry run, adds the MCP server to `.mcp.json` and ends with a dry run. Every answer is saved to `.env` right away."
+
+- q: Can I post longer texts with X Premium?
+  a: "Yes. Set `X_SUBSCRIPTION` to `basic`, `premium` or `premium_plus` and a post may count up to 25,000 characters instead of 280. Every paid tier gets the same limit through the API. Set the tier the account really has, or X refuses the long post."
 
 - q: Which X keys does the package need?
   a: "The four OAuth 1.0a user context keys of your own account, from the section OAuth 1.0 Keys under Keys & Tokens in the X developer console: Consumer Key and Consumer Secret (`X_CONSUMER_KEY`, `X_CONSUMER_SECRET`) and Access Token and Access Token Secret (`X_ACCESS_TOKEN`, `X_ACCESS_TOKEN_SECRET`). The Bearer Token and the OAuth 2.0 keys are not used. Give the app Read and Write permissions before you generate the access token, otherwise the token can only read."

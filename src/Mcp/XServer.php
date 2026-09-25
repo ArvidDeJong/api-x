@@ -11,7 +11,7 @@ use Laravel\Mcp\Server\Attributes\Name;
 use Laravel\Mcp\Server\Tool;
 
 #[Name('X')]
-#[Instructions('Posts short updates, optionally with one image, to the X account configured in this Laravel app. Keep a post under 280 characters, write it in the voice of the account owner and leave links out: posts with a link are refused unless the app allows them, because X bills them at a much higher rate.')]
+#[Instructions('Posts short updates, optionally with one image, to the X account configured in this Laravel app. Keep a post short (the post-update tool states the maximum length for this account), write it in the voice of the account owner and leave links out: posts with a link are refused unless the app allows them, because X bills them at a much higher rate.')]
 class XServer extends Server
 {
     /**

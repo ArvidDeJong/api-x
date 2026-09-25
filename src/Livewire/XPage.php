@@ -133,7 +133,7 @@ class XPage extends Component
         AuthorizeXPage::authorize();
 
         return view('api-x::livewire.x-page', [
-            'maxLength' => PostText::MAX_LENGTH,
+            'maxLength' => XConfig::subscription()->maxLength(),
             'allowLinks' => XConfig::allowLinks(),
         ])->layout(XConfig::uiLayout());
     }

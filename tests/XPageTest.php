@@ -93,6 +93,15 @@ it('counts the text the way X does', function () {
         ->assertSee('5 / 280');
 });
 
+it('counts up to the limit of the X subscription', function () {
+    allowPage();
+    config(['api_x.subscription' => 'premium']);
+
+    Livewire::test(XPage::class)
+        ->set('text', 'Hi 🚀')
+        ->assertSee('5 / 25000');
+});
+
 it('starts in dry run when the config says so', function () {
     allowPage();
     config(['api_x.dry_run' => true]);
