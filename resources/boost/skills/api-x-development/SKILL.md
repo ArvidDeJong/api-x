@@ -11,14 +11,14 @@ Use this skill when code or an agent posts to X in an application that has `darv
 
 ## Setting it up
 
-Run `php artisan x:install`. It asks for the four keys, checks them with `XClient::account()` (one billed read), sets `X_DAILY_LIMIT`, `X_ALLOW_LINKS` and `X_DRY_RUN`, adds the server to `.mcp.json` and ends with a dry run. In a script: `php artisan x:install --consumer-key=... --consumer-secret=... --access-token=... --access-token-secret=... --verify --mcp --no-interaction`.
+Run `php artisan x:install`. It asks for the four keys, checks them with `XClient::account()` (one billed read), sets `X_SUBSCRIPTION`, `X_DAILY_LIMIT`, `X_ALLOW_LINKS` and `X_DRY_RUN`, adds the server to `.mcp.json` and ends with a dry run. In a script: `php artisan x:install --consumer-key=... --consumer-secret=... --access-token=... --access-token-secret=... --verify --mcp --no-interaction`.
 
 ## How a post runs
 
 `XClient::post($text, $image = null, $dryRun = false)` runs these steps in order and stops at the first failure:
 
 1. Trim the text; an empty text throws `The post text is empty.`
-2. Count it the way X does (most Latin characters 1, emoji and CJK 2, a link 23). Above 280 it throws `The post text counts N characters on X; the maximum is 280.`
+2. Count it the way X does (most Latin characters 1, emoji and CJK 2, a link 23). Above the limit it throws `The post text counts N characters on X; the maximum is M.` The limit is 280, or 25,000 when `X_SUBSCRIPTION` is `basic`, `premium` or `premium_plus`; read it with `XConfig::subscription()->maxLength()`.
 3. Without `X_ALLOW_LINKS=true`, a URL, `www.` or a bare domain such as `arvid.nl` throws the link message.
 4. When the daily limit is reached it throws `The daily limit of N posts is reached.`
 5. Read and check the image: it must exist, be a JPEG, PNG, GIF or WebP and be at most 5 MB.
@@ -28,7 +28,7 @@ Run `php artisan x:install`. It asks for the four keys, checks them with `XClien
 
 ## Writing a good post
 
-- Stay well under 280 characters; one or two sentences and at most three short points.
+- Keep release announcements short, well under 280 characters, even when the account has an X subscription: one or two sentences and at most three short points. Only go longer when the owner asks for a long post.
 - Leave links out. The image and the package name already say what it is about.
 - Write in the voice of the account owner, in the language the owner uses on X.
 

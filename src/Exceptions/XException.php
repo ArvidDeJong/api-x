@@ -17,9 +17,13 @@ class XException extends RuntimeException
         return new self('The post text is empty.');
     }
 
-    public static function textTooLong(int $length, int $max): self
+    /**
+     * @param  bool  $subscriptionWouldFit  Whether a paid X subscription would accept the text.
+     */
+    public static function textTooLong(int $length, int $max, bool $subscriptionWouldFit = false): self
     {
-        return new self("The post text counts {$length} characters on X; the maximum is {$max}.");
+        return new self("The post text counts {$length} characters on X; the maximum is {$max}."
+            .($subscriptionWouldFit ? ' With an X subscription, set X_SUBSCRIPTION to allow up to 25,000.' : ''));
     }
 
     public static function linkNotAllowed(): self

@@ -6,6 +6,8 @@ namespace Darvis\ApiX\Console\Commands;
 
 use Darvis\ApiX\Exceptions\XException;
 use Darvis\ApiX\Support\EnvironmentFile;
+use Darvis\ApiX\Support\PostText;
+use Darvis\ApiX\Support\Subscription;
 use Darvis\ApiX\Support\XConfig;
 use Darvis\ApiX\XClient;
 use Illuminate\Console\Command;
@@ -60,6 +62,7 @@ class XInstallCommand extends Command
         {--consumer-secret= : Consumer Secret of the X app (OAuth 1.0 Keys)}
         {--access-token= : Access token of your account}
         {--access-token-secret= : Access token secret of your account}
+        {--subscription= : X subscription of the account: none, basic, premium or premium_plus}
         {--daily-limit= : Most posts per day, 0 switches the limit off}
         {--live : Post for real (X_DRY_RUN=false)}
         {--verify : Check the keys with X (one billed read request)}
@@ -69,7 +72,7 @@ class XInstallCommand extends Command
     /**
      * @var string
      */
-    protected $description = 'Set up darvis/api-x step by step: X app, keys, safety limits, MCP server and a dry run';
+    protected $description = 'Set up darvis/api-x step by step: X app, keys, subscription, safety limits, MCP server and a dry run';
 
     /**
      * Outcome per wizard step, shown in the summary.
@@ -100,7 +103,7 @@ class XInstallCommand extends Command
         intro(' darvis/api-x setup ');
 
         note(implode("\n", [
-            'This wizard sets up the package in 6 short steps and explains each one.',
+            'This wizard sets up the package in 7 short steps and explains each one.',
             'Every answer is saved to .env right away. Run it again at any time with',
             'php artisan x:install to check or change a setting.',
         ]));
@@ -109,6 +112,7 @@ class XInstallCommand extends Command
             'The X app' => fn (): bool => $this->stepApp(),
             'Keys' => fn (): bool => $this->stepKeys(),
             'Check the keys' => fn (): bool => $this->stepVerify($client),
+            'Subscription' => fn (): bool => $this->stepSubscription(),
             'Safety' => fn (): bool => $this->stepSafety(),
             'MCP server' => fn (): bool => $this->stepMcp(),
             'Dry run' => fn (): bool => $this->stepDryRun($client),
@@ -164,6 +168,17 @@ class XInstallCommand extends Command
 
                 $given[$key] = $variables[$variable];
             }
+        }
+
+        $subscription = $this->option('subscription');
+        if (is_string($subscription) && $subscription !== '') {
+            if (Subscription::tryFrom($subscription) === null) {
+                $this->components->error('--subscription must be one of: '.implode(', ', array_column(Subscription::cases(), 'value')).'.');
+
+                return self::FAILURE;
+            }
+
+            $variables['X_SUBSCRIPTION'] = $subscription;
         }
 
         $limit = $this->option('daily-limit');
@@ -313,6 +328,28 @@ class XInstallCommand extends Command
 
         $this->components->info("The keys belong to @{$account['username']} ({$account['name']}).");
         $this->result('Check', 'ok', '@'.$account['username']);
+
+        return true;
+    }
+
+    private function stepSubscription(): bool
+    {
+        note(implode("\n", [
+            'With a paid X subscription (Basic, Premium or Premium+) X accepts posts up to',
+            PostText::LONG_MAX_LENGTH.' characters instead of '.PostText::MAX_LENGTH.'. Pick the one of the account that posts;',
+            'with the wrong one, X refuses long posts the package lets through.',
+        ]));
+
+        $subscription = Subscription::from(select(
+            'Which X subscription does the account have?',
+            collect(Subscription::cases())->mapWithKeys(fn (Subscription $case): array => [
+                $case->value => $case->label().' ('.number_format($case->maxLength()).' characters)',
+            ])->all(),
+            XConfig::subscription()->value,
+        ));
+
+        $this->saveEnvironment(['X_SUBSCRIPTION' => $subscription->value]);
+        $this->result('Subscription', 'ok', $subscription->label().', posts up to '.number_format($subscription->maxLength()).' characters');
 
         return true;
     }
@@ -523,6 +560,7 @@ class XInstallCommand extends Command
             'X_ALLOW_LINKS' => 'api_x.allow_links',
             'X_DAILY_LIMIT' => 'api_x.daily_limit',
             'X_DRY_RUN' => 'api_x.dry_run',
+            'X_SUBSCRIPTION' => 'api_x.subscription',
         ];
         foreach (self::KEYS as $key => $variable) {
             $config[$variable] = 'api_x.credentials.'.$key;

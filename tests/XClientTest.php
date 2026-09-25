@@ -96,7 +96,23 @@ it('refuses an empty text', function () {
 
 it('refuses a text that is too long for X', function () {
     app(XClient::class)->post(str_repeat('a', 281));
-})->throws(XException::class, 'counts 281 characters');
+})->throws(XException::class, 'counts 281 characters on X; the maximum is 280. With an X subscription, set X_SUBSCRIPTION to allow up to 25,000.');
+
+it('accepts a long post when the account has an X subscription', function (string $subscription) {
+    fakeX();
+    config(['api_x.subscription' => $subscription]);
+
+    expect(app(XClient::class)->post(str_repeat('a', 25000))->id)->toBe('1445880548472328192');
+
+    expect(fn () => app(XClient::class)->post(str_repeat('a', 25001)))
+        ->toThrow(XException::class, 'counts 25001 characters on X; the maximum is 25000.');
+})->with(['basic', 'premium', 'premium_plus']);
+
+it('treats an unknown subscription as none', function () {
+    config(['api_x.subscription' => 'gold']);
+
+    app(XClient::class)->post(str_repeat('a', 281));
+})->throws(XException::class, 'the maximum is 280.');
 
 it('refuses a link unless links are allowed', function () {
     Http::fake();

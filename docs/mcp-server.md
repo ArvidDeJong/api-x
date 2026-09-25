@@ -41,7 +41,7 @@ The server has one tool, `post-update`:
 
 | Argument | Type | Required | What it does |
 | --- | --- | --- | --- |
-| `text` | string | yes | The post text, at most 280 characters as X counts them. |
+| `text` | string | yes | The post text, at most 280 characters as X counts them, or 25,000 with `X_SUBSCRIPTION` set. The tool description states the limit of the configured account. |
 | `image` | string | no | An absolute local path or an http(s) URL of a JPEG, PNG, GIF or WebP up to 5 MB. |
 | `dry_run` | boolean | no | Check the post without sending it. |
 

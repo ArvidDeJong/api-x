@@ -7,6 +7,7 @@ This package posts a text with one optional image to X through the X API v2. It 
 - There is one entry point, `Darvis\ApiX\XClient::post($text, $image = null, $dryRun = false)`. It returns a `Darvis\ApiX\PostResult` (`id`, `url()`, `mediaId`, `dryRun`, `remainingToday`) and throws `Darvis\ApiX\Exceptions\XException` for every failure. The command `x:post` and the MCP tool `post-update` call the same method.
 - The image is a local path or an http(s) URL of a JPEG, PNG, GIF or WebP up to 5 MB.
 - A text with a link is refused unless `X_ALLOW_LINKS=true`, because X bills posts with a link at a much higher rate. Don't switch that on to make a post pass; leave the link out.
+- The text limit is 280 as X counts it, or 25,000 when `X_SUBSCRIPTION` is `basic`, `premium` or `premium_plus`. Use `XConfig::subscription()->maxLength()` instead of a hard coded 280.
 - `X_DAILY_LIMIT` (default 10, 0 is off) caps real posts per day, and `X_DRY_RUN=true` or `dryRun: true` checks a post without sending it.
 
 @verbatim

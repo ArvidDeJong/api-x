@@ -71,7 +71,7 @@ A dry run checks the text and the image and tells you how many posts are left to
 
 ## Setup wizard
 
-`php artisan x:install` asks everything in six steps: the X app, the four keys, a check with X, the safety settings, the MCP server and a dry run. Every answer is saved to `.env` right away, so you can stop halfway and run it again later to check or change a setting. An empty answer to a key keeps the current value.
+`php artisan x:install` asks everything in seven steps: the X app, the four keys, a check with X, the X subscription of the account, the safety settings, the MCP server and a dry run. Every answer is saved to `.env` right away, so you can stop halfway and run it again later to check or change a setting. An empty answer to a key keeps the current value.
 
 Checking the keys calls `GET /2/users/me`, which X bills as one read request. The wizard asks before it does.
 
@@ -80,6 +80,7 @@ In a script, pass options and `--no-interaction`; the command then only changes 
 | Option | What it does |
 | --- | --- |
 | `--consumer-key=`, `--consumer-secret=`, `--access-token=`, `--access-token-secret=` | Write the key to `.env`. |
+| `--subscription=` | Write `X_SUBSCRIPTION`: `none`, `basic`, `premium` or `premium_plus`. |
 | `--daily-limit=` | Write `X_DAILY_LIMIT`. |
 | `--live` | Write `X_DRY_RUN=false`. |
 | `--verify` | Check the keys with X. |
@@ -99,6 +100,7 @@ In a script, pass options and `--no-interaction`; the command then only changes 
 | `dry_run` | `X_DRY_RUN` | `false` | Check every post but never send one. |
 | `mcp.enabled` | `X_MCP_ENABLED` | `true` | Register the MCP server when `laravel/mcp` is installed. |
 | `mcp.handle` | `X_MCP_HANDLE` | `x` | The handle for `php artisan mcp:start`. |
+| `subscription` | `X_SUBSCRIPTION` | `none` | The X subscription of the posting account: `none`, `basic`, `premium` or `premium_plus`. Any paid tier allows posts up to 25,000 characters instead of 280. See [Posting](posting.md#x-subscription). |
 | `timeout` | `X_TIMEOUT` | `30` | Timeout in seconds for a call to X. |
 | `ui.*` | `X_UI_*` | see [Page](page.md) | The page to post from the browser. |
 

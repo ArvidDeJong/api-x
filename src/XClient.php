@@ -143,8 +143,9 @@ class XClient
         }
 
         $length = PostText::weightedLength($text);
-        if ($length > PostText::MAX_LENGTH) {
-            throw XException::textTooLong($length, PostText::MAX_LENGTH);
+        $max = XConfig::subscription()->maxLength();
+        if ($length > $max) {
+            throw XException::textTooLong($length, $max, $max < PostText::LONG_MAX_LENGTH && $length <= PostText::LONG_MAX_LENGTH);
         }
 
         if (! XConfig::allowLinks() && PostText::containsLink($text)) {
