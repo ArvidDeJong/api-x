@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-09-25
+
 ### Added
 
 - `X_SUBSCRIPTION` (`none`, `basic`, `premium` or `premium_plus`) sets the X subscription of the posting account. With any paid tier a post may count up to 25,000 characters instead of 280, in `XClient::post()`, `x:post`, the MCP tool and the page counter. Read it with `XConfig::subscription()`, which returns the new `Darvis\ApiX\Support\Subscription` enum.
@@ -51,7 +53,8 @@ First release.
 - A local MCP server with the `post-update` tool, registered as `php artisan mcp:start x` when `laravel/mcp` is installed.
 - Laravel Boost guideline and `api-x-development` skill.
 
-[Unreleased]: https://github.com/ArvidDeJong/api-x/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/ArvidDeJong/api-x/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/ArvidDeJong/api-x/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/ArvidDeJong/api-x/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/ArvidDeJong/api-x/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/ArvidDeJong/api-x/releases/tag/v1.0.0
