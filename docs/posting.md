@@ -45,6 +45,25 @@ The values are `none` (default), `basic`, `premium` and `premium_plus`. An unkno
 
 Set the subscription the account really has. With a paid tier configured on an account without one, the package lets a long post through and X refuses it.
 
+### What each tier offers
+
+From the X help centre, [About X Premium](https://help.x.com/en/using-x/x-premium). Only the post length matters to this package.
+
+| | None | Basic | Premium | Premium+ |
+| --- | --- | --- | --- | --- |
+| Post length | 280 | 25,000 | 25,000 | 25,000 |
+| Long posts through the API | no | yes | yes | yes |
+| Edit a post | no | within 1 hour | within 1 hour | within 1 hour |
+| Video length | about 2 min 20 s | about 3 hours, 8 GB, 1080p | about 3 hours, 8 GB, 1080p | about 3 hours, 8 GB, 1080p |
+| Text formatting, bookmark folders, app icon | no | yes | yes | yes |
+| Reply prioritisation | no | small | larger | largest |
+| Blue checkmark and ID verification | no | no | yes | yes |
+| Ads | normal | normal | about 50% fewer | none, some sponsored content |
+| Creator Subscriptions, Original Content Rewards, Media Studio | no | no | yes | yes |
+| SuperGrok, Grok Bot, Radar Search, Articles | no | no | no | yes |
+
+The package posts text and one image, so video and editing do not apply. Articles cannot be posted through the API. Prices differ per country and change often; check them on X.
+
 ## Images
 
 One image per post: JPEG, PNG, GIF or WebP, at most 5 MB. Pass a local path or an http(s) URL. The type is read from the file contents, not from the name.
