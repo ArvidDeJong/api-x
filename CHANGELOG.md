@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-09-28
+
 ### Added
 
 - Read the posts that mention the account, newest first: `XClient::mentions($sinceId = null, $limit = 10)` returns `Darvis\ApiX\Mention` objects (id, text, author, time, the post it replies to and `url()`). The account's own posts are left out. Also as `php artisan x:mentions --since= --limit=` and as the MCP tool `list-mentions` (`since_id`, `limit`). X bills every post returned as a read; pass the newest id of last time as `since_id`.
@@ -65,7 +67,8 @@ First release.
 - A local MCP server with the `post-update` tool, registered as `php artisan mcp:start x` when `laravel/mcp` is installed.
 - Laravel Boost guideline and `api-x-development` skill.
 
-[Unreleased]: https://github.com/ArvidDeJong/api-x/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/ArvidDeJong/api-x/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/ArvidDeJong/api-x/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/ArvidDeJong/api-x/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/ArvidDeJong/api-x/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/ArvidDeJong/api-x/compare/v1.0.0...v1.1.0
