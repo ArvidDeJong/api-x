@@ -22,7 +22,10 @@
   a: The package is free and MIT licensed. X bills API use per request, and a post with a link costs a lot more than a plain post. Check the current prices in the X developer portal. The package refuses links by default for that reason; set `X_ALLOW_LINKS=true` to allow them.
 
 - q: How do I let Claude or another AI agent post for me?
-  a: Install `laravel/mcp` (Laravel Boost already does) and the package registers a local MCP server with the handle `x`. Add `php artisan mcp:start x` as a stdio server to your agent. It gets one tool, `post-update`, with `text`, `image` and `dry_run`.
+  a: "Install `laravel/mcp` (Laravel Boost already does) and the package registers a local MCP server with the handle `x`. Add `php artisan mcp:start x` as a stdio server to your agent. It gets two tools: `post-update` (`text`, `image`, `dry_run`, `reply_to`) and `list-mentions` (`since_id`, `limit`)."
+
+- q: Can it read the replies to my posts and answer them?
+  a: "Yes. `XClient::mentions()`, `php artisan x:mentions` and the MCP tool `list-mentions` read the newest posts that mention your account, replies to your posts included. Pass the id of one of them as `replyTo` (or `--reply-to`, `reply_to`) to answer it. X bills every post it returns as a read, so pass the newest id of last time as `since_id`. X only lets the app reply to a post that mentions or quotes your account."
 
 - q: How do I stop an agent from posting too much?
   a: "`X_DAILY_LIMIT` caps the number of posts per day (10 by default, counted in the cache; 0 switches it off). `X_DRY_RUN=true` runs every check without sending anything. Both apply to the class, the command and the MCP tool alike."

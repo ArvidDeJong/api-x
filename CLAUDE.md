@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`darvis/api-x` is a Laravel package that posts text with one optional image to X through the X API v2, from PHP, from `php artisan x:post` and from a local MCP server.
+`darvis/api-x` is a Laravel package that posts text with one optional image to X through the X API v2, reads the posts that mention the account and replies to them, from PHP, from `php artisan x:post` / `x:mentions` and from a local MCP server.
 
 - Namespace: `Darvis\ApiX\` → `src/`
 - Service provider auto-registered via `extra.laravel.providers` in [composer.json](composer.json)
@@ -24,6 +24,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - [XPage](src/Livewire/XPage.php) is the page, built like the Mailtrap inbox: registered only when Livewire is bound, the `postToX` gate in [AuthorizeXPage](src/Http/Middleware/AuthorizeXPage.php) as persistent middleware and again in `boot()`, `render()` and `post()`. The default gate allows `local` only; never make it more permissive.
 - `XClient::record()` writes the history after X answered. It reports a database failure and carries on: the history never decides whether a post goes out.
 - The daily count is `api_x:posts:<date>` in the default cache store. Only a successful post counts.
+- `mentions()` reads `GET /2/users/{id}/mentions`, which X lists under owned reads (its cheapest read, deduplicated per UTC day). The user id comes from `/2/users/me` once and is cached forever as `api_x:user_id:<sha1 of the access token>`; a cache failure is reported and the lookup simply runs again. Reading is never blocked by `X_DRY_RUN` or the daily limit: those are about posting.
+- A GET is signed with its query: pass the same array to `OAuth1::header()` and to `Http::get()`, or X answers 401.
+- A reply is `post()` with `replyTo`, so it goes through every check and the daily limit. `postId()` takes digits or an x.com/twitter.com status link and nothing else. X only lets self-serve apps reply to a post whose author mentioned or quoted the account; don't try to work around a 403 there.
+- `inReplyToText` comes from the `x_posts` history, never from X: an extra lookup at X would be a billed post read.
 
 ## Conventions specific to this package
 

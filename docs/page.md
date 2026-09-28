@@ -1,7 +1,7 @@
 ---
 title: "Page"
 description: "The Livewire page of darvis/api-x: post to X from the browser with a live counter and an image, and see every post with its status in the history."
-nav_order: 5
+nav_order: 6
 ---
 
 # Page

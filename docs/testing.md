@@ -1,14 +1,14 @@
 ---
 title: "Testing"
-description: "Test code that posts to X with darvis/api-x without calling X: fake the two endpoints with Http::fake(), use dry runs and test the MCP tool directly."
-nav_order: 7
+description: "Test code that posts to X or reads mentions with darvis/api-x without calling X: fake the endpoints with Http::fake(), use dry runs and test the MCP tools."
+nav_order: 8
 ---
 
 # Testing
 
 The package talks to X through Laravel's HTTP client only, so `Http::fake()` covers every call.
 
-## Fake the two endpoints
+## Fake the post endpoints
 
 ```php
 use Darvis\ApiX\XClient;
@@ -37,6 +37,30 @@ it('announces a release on X', function () {
 });
 ```
 
+## Fake the mentions
+
+Reading mentions calls two endpoints: `GET /2/users/me` once for the id of the account, then the mentions timeline of that id. The wildcard covers the query string.
+
+```php
+Http::fake([
+    'api.x.com/2/users/me' => Http::response(['data' => ['id' => '10', 'name' => 'You', 'username' => 'you']]),
+    'api.x.com/2/users/10/mentions*' => Http::response([
+        'data' => [
+            ['id' => '300', 'text' => '@you Nice!', 'author_id' => '20', 'created_at' => '2026-09-28T09:12:00.000Z'],
+        ],
+        'includes' => ['users' => [['id' => '20', 'name' => 'Jane Doe', 'username' => 'jane']]],
+    ]),
+    'api.x.com/2/tweets' => Http::response(['data' => ['id' => '400']], 201),
+]);
+
+$mention = app(XClient::class)->mentions()[0];
+app(XClient::class)->post('Thanks!', replyTo: $mention->id);
+
+Http::assertSent(fn (Request $request) => $request['reply'] === ['in_reply_to_tweet_id' => '300']);
+```
+
+The account id is kept in the cache, so with the `array` store every test looks it up again.
+
 ## Dry runs
 
 `config(['api_x.dry_run' => true])` makes every post a dry run: every check runs and nothing is sent. Assert with `Http::assertNothingSent()`.
@@ -45,13 +69,18 @@ it('announces a release on X', function () {
 
 The limit is counted in the default cache store. Use the `array` store in tests so every test starts at zero.
 
-## The MCP tool
+## The MCP tools
 
 ```php
+use Darvis\ApiX\Mcp\Tools\ListMentions;
 use Darvis\ApiX\Mcp\Tools\PostUpdate;
 use Darvis\ApiX\Mcp\XServer;
 
 XServer::tool(PostUpdate::class, ['text' => 'Hello', 'dry_run' => true])
     ->assertOk()
     ->assertSee('Dry run');
+
+XServer::tool(ListMentions::class, ['limit' => 5])
+    ->assertOk()
+    ->assertSee('Newest id: 300');
 ```

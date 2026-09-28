@@ -1,7 +1,7 @@
 ---
 title: "MCP server"
-description: "Let Claude or another AI agent post to X through the local MCP server of darvis/api-x: the handle, the post-update tool and how to add it to your agent."
-nav_order: 6
+description: "Let Claude or another AI agent post and reply on X through the local MCP server of darvis/api-x: the handle, both tools and how to add it to your agent."
+nav_order: 7
 ---
 
 # MCP server
@@ -35,21 +35,35 @@ For Claude Code, add it to `.mcp.json` in the root of the Laravel app:
 
 For the Claude desktop app and other clients, use the same command with the absolute path to `artisan`, for example `/Users/you/Sites/my-app/artisan`.
 
-## The tool
+## The tools
 
-The server has one tool, `post-update`:
+### post-update
+
+Publishes a post, or a reply.
 
 | Argument | Type | Required | What it does |
 | --- | --- | --- | --- |
 | `text` | string | yes | The post text, at most 280 characters as X counts them, or 25,000 with `X_SUBSCRIPTION` set. The tool description states the limit of the configured account. |
 | `image` | string | no | An absolute local path or an http(s) URL of a JPEG, PNG, GIF or WebP up to 5 MB. |
 | `dry_run` | boolean | no | Check the post without sending it. |
+| `reply_to` | string | no | The id of the post to reply to, or a link to it. X only allows a reply to a post that mentions or quotes the account, such as the posts `list-mentions` returns. |
 
-On success the tool answers `Posted: <link>` and the number of posts left today. A refused post comes back as a tool error with the same message the exception carries, so the agent can fix the text and try again.
+On success the tool answers `Posted: <link>`, or `Replied: <link>` for a reply, and the number of posts left today. A refused post comes back as a tool error with the same message the exception carries, so the agent can fix the text and try again.
+
+### list-mentions
+
+Reads the newest posts that mention the account, newest first: replies to its posts and posts that name it. It is marked read only.
+
+| Argument | Type | Required | What it does |
+| --- | --- | --- | --- |
+| `since_id` | string | no | Only posts newer than this post id. |
+| `limit` | integer | no | 5 to 100, default 10. |
+
+Every post comes with its id, the author, the time, the link and the text. A reply to one of your own posts also shows the text of that post, taken from the history. The answer ends with the newest id, to pass as `since_id` next time. X bills every post returned as a read; see [Mentions and replies](mentions.md#what-x-bills).
 
 ## Keep the agent in check
 
-The post goes out immediately and publicly. Use `X_DAILY_LIMIT` to cap how often an agent can post, and `X_DRY_RUN=true` while you try things out. Links stay refused unless you allow them.
+The post goes out immediately and publicly. The server instructions tell the agent to show you a reply before it sends it, unless you said otherwise. Use `X_DAILY_LIMIT` to cap how often an agent can post, and `X_DRY_RUN=true` while you try things out. Links stay refused unless you allow them.
 
 ## Posting after a release
 

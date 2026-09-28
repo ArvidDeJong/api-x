@@ -1,6 +1,6 @@
 {
     "name": "darvis/api-x",
-    "description": "Post to X (Twitter) from Laravel: posts with an image through the X API v2, a setup wizard, an artisan command and an MCP server so Claude and other AI agents can post for you.",
+    "description": "Post to X (Twitter) from Laravel: posts with an image, replies and your mentions through the X API v2, a setup wizard, artisan commands and an MCP server so Claude and other AI agents can post and reply for you.",
     "keywords": [
         "laravel",
         "x",
@@ -8,6 +8,8 @@
         "x-api",
         "twitter-api",
         "tweet",
+        "mentions",
+        "replies",
         "post-to-x",
         "social-media",
         "oauth1",

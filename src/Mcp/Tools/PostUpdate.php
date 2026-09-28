@@ -15,7 +15,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 
-#[Description('Publish a post on X with an optional image. The post goes out immediately and publicly; use dry_run to check it first. Returns the link to the post and how many posts are left today.')]
+#[Description('Publish a post on X with an optional image, or a reply to a post with reply_to. The post goes out immediately and publicly; use dry_run to check it first. Returns the link to the post and how many posts are left today.')]
 #[IsOpenWorld]
 class PostUpdate extends Tool
 {
@@ -32,6 +32,8 @@ class PostUpdate extends Tool
                 ->description('Optional image: an absolute local path or an http(s) URL to a JPEG, PNG, GIF or WebP of at most 5 MB.'),
             'dry_run' => $schema->boolean()
                 ->description('Check the post without sending it.'),
+            'reply_to' => $schema->string()
+                ->description('Optional: the id of the post to reply to, or its link. X only lets the app reply to a post that mentions or quotes this account, such as the posts list-mentions returns.'),
         ];
     }
 
@@ -41,6 +43,7 @@ class PostUpdate extends Tool
             'text' => ['required', 'string'],
             'image' => ['nullable', 'string'],
             'dry_run' => ['nullable', 'boolean'],
+            'reply_to' => ['nullable', 'string'],
         ]);
 
         try {
@@ -48,6 +51,7 @@ class PostUpdate extends Tool
                 $validated['text'],
                 $validated['image'] ?? null,
                 (bool) ($validated['dry_run'] ?? false),
+                $validated['reply_to'] ?? null,
             );
         } catch (XException $exception) {
             return Response::error($exception->getMessage());
@@ -57,6 +61,6 @@ class PostUpdate extends Tool
 
         return Response::text($result->dryRun
             ? 'Dry run: the post passed every check and was not sent.'.$remaining
-            : 'Posted: '.$result->url().$remaining);
+            : ($result->replyTo === null ? 'Posted: ' : 'Replied: ').$result->url().$remaining);
     }
 }
