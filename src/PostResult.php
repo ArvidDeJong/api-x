@@ -9,12 +9,16 @@ namespace Darvis\ApiX;
  */
 final class PostResult
 {
+    /**
+     * @param  string|null  $replyTo  The id of the post this one replies to.
+     */
     public function __construct(
         public readonly string $text,
         public readonly bool $dryRun,
         public readonly ?string $id = null,
         public readonly ?string $mediaId = null,
         public readonly ?int $remainingToday = null,
+        public readonly ?string $replyTo = null,
     ) {}
 
     /**

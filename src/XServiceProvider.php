@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Darvis\ApiX;
 
 use Darvis\ApiX\Console\Commands\XInstallCommand;
+use Darvis\ApiX\Console\Commands\XMentionsCommand;
 use Darvis\ApiX\Console\Commands\XPostCommand;
 use Darvis\ApiX\Http\Middleware\AuthorizeXPage;
 use Darvis\ApiX\Livewire\XPage;
@@ -45,7 +46,7 @@ class XServiceProvider extends ServiceProvider
                 __DIR__.'/../resources/views' => resource_path('views/vendor/api-x'),
             ], 'api-x-views');
 
-            $this->commands([XInstallCommand::class, XPostCommand::class]);
+            $this->commands([XInstallCommand::class, XPostCommand::class, XMentionsCommand::class]);
         }
 
         $this->registerMcpServer();

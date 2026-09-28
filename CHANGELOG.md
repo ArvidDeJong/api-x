@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Read the posts that mention the account, newest first: `XClient::mentions($sinceId = null, $limit = 10)` returns `Darvis\ApiX\Mention` objects (id, text, author, time, the post it replies to and `url()`). The account's own posts are left out. Also as `php artisan x:mentions --since= --limit=` and as the MCP tool `list-mentions` (`since_id`, `limit`). X bills every post returned as a read; pass the newest id of last time as `since_id`.
+- A reply to one of the account's own posts carries that post's text in `inReplyToText`, taken from the history, without another billed read.
+- Reply to a post: `XClient::post()` takes `replyTo` (a post id or a link to it on x.com or twitter.com), `x:post` takes `--reply-to=` and the MCP tool `post-update` takes `reply_to`. A reply is checked, limited and counted like any post, and `PostResult::$replyTo` holds the id. X only allows a reply to a post that mentions or quotes the account.
+- The id of the account is looked up once with `GET /2/users/me` and kept in the cache per access token.
+
+### Changed
+
+- The MCP server instructions now cover reading and replying, and tell the agent to show a reply to the owner before sending it, unless the owner said otherwise.
+- `XClient::createPost()` takes a fourth argument, `?string $replyTo = null`. A subclass that overrides it must accept that argument.
+
 ## [1.3.0] - 2026-09-25
 
 ### Added

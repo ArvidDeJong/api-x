@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Darvis\ApiX\XServiceProvider;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
@@ -40,4 +41,16 @@ it('publishes the config under its tag', function () {
         ->toHaveCount(1)
         ->and(array_values(XServiceProvider::pathsToPublish(XServiceProvider::class, 'api-x-config'))[0])
         ->toEndWith('api_x.php');
+});
+
+it('replies from the command line', function () {
+    Http::fake([
+        'api.x.com/2/tweets' => Http::response(['data' => ['id' => '8']], 201),
+    ]);
+
+    $this->artisan('x:post', ['text' => 'Thanks!', '--reply-to' => 'https://x.com/jane/status/300'])
+        ->expectsOutputToContain('Replied: https://x.com/i/web/status/8')
+        ->assertSuccessful();
+
+    Http::assertSent(fn (Request $request) => $request['reply'] === ['in_reply_to_tweet_id' => '300']);
 });

@@ -78,7 +78,9 @@ X bills a post with a link at a much higher rate than a plain post. The package 
 
 ## Dry runs
 
-Pass `dryRun: true`, use `--dry-run` on the command, `dry_run` on the MCP tool, or set `X_DRY_RUN=true` to make every post a dry run.
+Pass `dryRun: true`, use `--dry-run` on the command, `dry_run` on the MCP tool, or set `X_DRY_RUN=true` to make every post a dry run. Reading mentions is not affected by `X_DRY_RUN`.
+
+To post a reply, pass `replyTo`; see [Mentions and replies](mentions.md#reply).
 
 ## The result
 

@@ -1,7 +1,7 @@
 ---
 title: "Troubleshooting"
-description: "Every message darvis/api-x gives when a post to X is refused, quoted literally, with the cause and the fix, plus the HTTP errors X itself returns most often."
-nav_order: 8
+description: "Every message darvis/api-x gives when a post, reply or read of mentions is refused, quoted literally, with the cause and fix, plus X's own HTTP errors."
+nav_order: 9
 ---
 
 # Troubleshooting
@@ -22,6 +22,8 @@ Every failure is a `Darvis\ApiX\Exceptions\XException`. The MCP tool returns the
 | `The image could not be read: <path or URL> (HTTP 429)` | The file does not exist, or the URL did not answer with an image; the reason in brackets says why. GitHub's release cards (opengraph.githubassets.com) answer 429 Too Many Requests now and then. | Use an absolute path, or wait and try the URL again. |
 | `The image type text/plain is not supported; use JPEG, PNG, GIF or WebP.` | The file is not an image X accepts. | Convert it. |
 | `The image is 7.2 MB; X accepts at most 5 MB.` | The image is too large. | Resize or compress it. |
+| `The post to reply to must be a post id or a link to a post on X: <value>` | `replyTo`, `--reply-to` or `reply_to` is neither digits nor an x.com or twitter.com link to a post. | Pass the id of the post, or copy its link. |
+| `since_id must be the id of a post, only digits: <value>` | The id to read newer mentions from is not a post id. | Pass the newest id of the previous read, or leave it out. |
 
 ## The page answers 403
 
@@ -31,13 +33,13 @@ Only visitors the `postToX` gate allows get in; without a gate of your own that 
 
 `The request to X failed: <reason>` means X could not be reached, for example a timeout or no network.
 
-The others start with `X refused to create the post`, `X refused to upload the image` or, from the setup wizard, `X refused to check the keys`, followed by the HTTP status and the reason X gave.
+The others start with `X refused to create the post`, `X refused to upload the image`, `X refused to read the mentions` or, from the setup wizard, `X refused to check the keys`, followed by the HTTP status and the reason X gave.
 
 | Status | Usual cause |
 | --- | --- |
 | 401 | A key is wrong: often the Consumer Key and Secret were pasted into the Access Token fields too, or the Consumer Key was regenerated after the Access Token (that makes the token invalid; generate it again). Less often the system clock is far off, because OAuth 1.0a signs a timestamp. |
 | 402 | The account has no API credit left. |
-| 403 | The app has no Write permission, or the access token was generated before it had. Generate a new access token. A duplicate post is refused with 403 as well. |
+| 403 | The app has no Write permission, or the access token was generated before it had. Generate a new access token. A duplicate post is refused with 403 as well, and so is a reply to a post whose author did not mention or quote your account. |
 | 429 | Too many requests. Wait and try again. |
 
 ## The MCP server does not show up

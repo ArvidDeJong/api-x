@@ -6,8 +6,9 @@
 [![License](https://img.shields.io/packagist/l/darvis/api-x.svg)](LICENSE)
 
 A Laravel package that posts short updates, with one optional image, to **X** (formerly
-Twitter) through the X API v2. Call it from PHP, from the command line, or let an AI agent
-such as Claude post for you through a local MCP server. No SDK: every call goes through
+Twitter) through the X API v2, reads the posts that mention you and replies to them. Call it
+from PHP, from the command line, or let an AI agent such as Claude do it through a local MCP
+server. No SDK: every call goes through
 Laravel's built-in HTTP client.
 
 Unofficial and independent: this is not an official X product and is not affiliated with X Corp.
@@ -17,7 +18,8 @@ Unofficial and independent: this is not an official X product and is not affilia
 - A setup wizard, `php artisan x:install`, that explains every step and writes `.env`
 - One call to post a text with a JPEG, PNG, GIF or WebP image, from a local path or a URL
 - `php artisan x:post` for scripts and the terminal
-- A local MCP server with a `post-update` tool, registered when `laravel/mcp` is installed
+- Read the posts that mention your account (`x:mentions`) and reply to them (`--reply-to`)
+- A local MCP server with `post-update` and `list-mentions` tools, registered when `laravel/mcp` is installed
 - A page to post from the browser with the history of every post, when Livewire and Flux are installed
 - Checks the text the way X counts it before anything is sent or billed, up to 25,000 characters for accounts with an X subscription
 - Refuses links by default, because X bills posts with a link at a much higher rate
@@ -71,8 +73,17 @@ $result = app(XClient::class)->post('Working on something new', storage_path('ap
 $result->url(); // https://x.com/i/web/status/...
 ```
 
+Read who mentioned you and answer one of them:
+
+```php
+$mention = app(XClient::class)->mentions(limit: 5)[0];
+
+app(XClient::class)->post('Thanks, glad it helps!', replyTo: $mention->id);
+```
+
 For an AI agent, add `php artisan mcp:start x` as a stdio MCP server. See the
-[MCP server](https://arviddejong.github.io/api-x/mcp-server.html) page.
+[MCP server](https://arviddejong.github.io/api-x/mcp-server.html) and
+[Mentions and replies](https://arviddejong.github.io/api-x/mentions.html) pages.
 
 ## Documentation
 

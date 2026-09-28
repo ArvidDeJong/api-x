@@ -61,6 +61,16 @@ class XException extends RuntimeException
         return new self('The image is '.round($bytes / 1048576, 1).' MB; X accepts at most '.round($max / 1048576).' MB.');
     }
 
+    public static function invalidReplyTo(string $value): self
+    {
+        return new self("The post to reply to must be a post id or a link to a post on X: {$value}");
+    }
+
+    public static function invalidSinceId(string $value): self
+    {
+        return new self("since_id must be the id of a post, only digits: {$value}");
+    }
+
     public static function requestError(\Throwable $previous): self
     {
         return new self('The request to X failed: '.$previous->getMessage(), previous: $previous);

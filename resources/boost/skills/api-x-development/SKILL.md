@@ -1,13 +1,13 @@
 ---
 name: api-x-development
-description: Work with darvis/api-x. Use it to post a text with an image to X from Laravel code, the x:post command or the post-update MCP tool, to write a release announcement, to handle a refused post and to test all of it without calling X.
+description: Work with darvis/api-x. Use it to post a text with an image to X from Laravel code, the x:post command or the post-update MCP tool, to read mentions and answer them with a reply, to write a release announcement, to handle a refused post and to test all of it without calling X.
 ---
 
 # darvis/api-x development
 
 ## When to use this skill
 
-Use this skill when code or an agent posts to X in an application that has `darvis/api-x` installed, when a post is refused with an `XException`, when you announce a release on X, or when you write tests around any of this.
+Use this skill when code or an agent posts to X in an application that has `darvis/api-x` installed, when it reads the posts that mention the account or answers them, when a post is refused with an `XException`, when you announce a release on X, or when you write tests around any of this.
 
 ## Setting it up
 
@@ -31,6 +31,44 @@ Run `php artisan x:install`. It asks for the four keys, checks them with `XClien
 - Keep release announcements short, well under 280 characters, even when the account has an X subscription: one or two sentences and at most three short points. Only go longer when the owner asks for a long post.
 - Leave links out. The image and the package name already say what it is about.
 - Write in the voice of the account owner, in the language the owner uses on X.
+
+## Reading mentions and replying
+
+`XClient::mentions($sinceId = null, $limit = 10)` (or `x:mentions`, or the MCP tool `list-mentions`) returns the newest posts that mention the account, newest first, without the account's own posts. `$limit` is kept between 5 and 100. A reply to one of the account's posts has `inReplyToId`, and `inReplyToText` when that post is in the `x_posts` history.
+
+| Step | What happens | Cost |
+| --- | --- | --- |
+| First call | `GET /2/users/me` for the account id, then cached per access token | one billed read, once |
+| Every call | `GET /2/users/{id}/mentions` with `since_id` and `max_results` | every post returned is a billed read |
+| Reply | `POST /2/tweets` with `reply.in_reply_to_tweet_id` | like any post; with a link much more |
+
+Pitfalls:
+
+- Always pass the newest id of the previous read as `since_id`. Reading without it bills the same posts again on another day.
+- Never poll mentions on a schedule of minutes or on page loads; read when someone asks.
+- X only allows a reply to a post that mentions or quotes the account. Reply to a mention, not to some other post in the thread, or X answers 403.
+- A reply counts towards `X_DAILY_LIMIT` and is refused with a link unless `X_ALLOW_LINKS=true`.
+- `X_DRY_RUN` does not stop reading; it only concerns posting.
+
+## Writing a good reply
+
+- Show every reply to the owner before sending it, unless the owner said to send without asking. It is public, under their name.
+- Answer the person, not the crowd: short, specific, in the owner's voice and language. One or two sentences is usually right.
+- Not everything needs an answer: a plain "nice!" can get a short thanks, spam gets nothing. Leave prices, complaints and legal matters to the owner.
+- Don't start with the @handle; X adds the reply context itself.
+
+@verbatim
+<code-snippet name="Answer the newest mentions" lang="php">
+use Darvis\ApiX\XClient;
+
+$client = app(XClient::class);
+
+foreach ($client->mentions(sinceId: $lastSeenId) as $mention) {
+    // Draft an answer, let the owner approve it, then:
+    $client->post('Yes, it works with Laravel 13.', replyTo: $mention->id);
+}
+</code-snippet>
+@endverbatim
 
 ## Announcing a release
 
@@ -62,6 +100,10 @@ use Illuminate\Support\Facades\Http;
 Http::fake([
     'api.x.com/2/media/upload' => Http::response(['data' => ['id' => '10']]),
     'api.x.com/2/tweets' => Http::response(['data' => ['id' => '20']], 201),
+    'api.x.com/2/users/me' => Http::response(['data' => ['id' => '1', 'name' => 'You', 'username' => 'you']]),
+    'api.x.com/2/users/1/mentions*' => Http::response(['data' => [
+        ['id' => '30', 'text' => '@you Nice!', 'author_id' => '2'],
+    ]]),
 ]);
 </code-snippet>
 @endverbatim

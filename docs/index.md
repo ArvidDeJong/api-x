@@ -1,13 +1,13 @@
 ---
 title: "Home"
 nav_order: 1
-description: "darvis/api-x for Laravel posts text and images to X through the X API v2, from PHP, an artisan command or a local MCP server for AI agents."
+description: "darvis/api-x for Laravel posts text and images to X through the X API v2, reads your mentions and replies, from PHP, artisan or an MCP server."
 permalink: /
 ---
 
 # darvis/api-x
 
-`darvis/api-x` is a Laravel package that posts short updates, with one optional image, to **X** (formerly Twitter). You call it from PHP, from the command line with `php artisan x:post`, or let an AI agent such as Claude do it through a local MCP server.
+`darvis/api-x` is a Laravel package that posts short updates, with one optional image, to **X** (formerly Twitter), reads the posts that mention your account and replies to them. You call it from PHP, from the command line with `php artisan x:post`, or let an AI agent such as Claude do it through a local MCP server.
 
 This is an unofficial, independent open-source package: it is not an official X product and is not affiliated with X Corp.
 
@@ -21,7 +21,8 @@ A developer who wants to share what they are building without leaving the editor
 - Checks the text the way X counts it, before anything is sent or billed
 - Refuses links unless you allow them, because X bills posts with a link at a much higher rate
 - Caps the number of posts per day and offers a dry run
-- Registers a local MCP server with one tool, when `laravel/mcp` is installed
+- Reads the posts that mention the account and replies to them
+- Registers a local MCP server with two tools, when `laravel/mcp` is installed
 - Adds a page to post from the browser, with the history of every post, when Livewire and Flux are installed
 
 ## What it does not do
@@ -34,8 +35,9 @@ A developer who wants to share what they are building without leaving the editor
 - [Installation & configuration](installation.md): the X app, the keys and every config value
 - [Quick start](quickstart.md): your first post in five minutes
 - [Posting](posting.md): text, images, links, the daily limit and dry runs
+- [Mentions and replies](mentions.md): read who mentioned you and answer them
 - [Page](page.md): post from the browser and see the history
-- [MCP server](mcp-server.md): let Claude or another agent post for you
+- [MCP server](mcp-server.md): let Claude or another agent post and reply for you
 - [Testing](testing.md): test code that posts, without calling X
 - [Troubleshooting](troubleshooting.md): every message the package gives, with the fix
 - [FAQ](faq.md)

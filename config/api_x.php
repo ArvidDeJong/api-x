@@ -58,7 +58,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | daily_limit: the most posts per day, counted in the cache. 0 switches
-    | the limit off. dry_run: validate everything but never call X.
+    | the limit off. dry_run: check every post but never send one. Reading
+    | mentions is not affected.
     |
     */
 
