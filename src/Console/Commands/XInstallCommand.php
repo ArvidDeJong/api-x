@@ -54,6 +54,8 @@ class XInstallCommand extends Command
 
     public const REPOSITORY = 'https://github.com/ArvidDeJong/api-x';
 
+    private const SPONSOR_URL = 'https://github.com/sponsors/ArvidDeJong';
+
     /**
      * @var string
      */
@@ -134,7 +136,7 @@ class XInstallCommand extends Command
 
         $this->publishConfig();
         $this->renderSummary();
-        $this->askForStar();
+        $this->askForSponsor();
 
         return self::SUCCESS;
     }
@@ -519,19 +521,19 @@ class XInstallCommand extends Command
     /**
      * One question at the end of the interactive wizard, never in the flag-driven install.
      */
-    private function askForStar(): void
+    private function askForSponsor(): void
     {
-        if (! confirm('Star darvis/api-x on GitHub? A star helps other developers find the package.', true, hint: self::REPOSITORY)) {
+        if (! confirm('Buy me a beer? 🍺 Sponsoring on GitHub keeps darvis/api-x maintained.', true, hint: self::SPONSOR_URL)) {
             return;
         }
 
         Process::run(match (PHP_OS_FAMILY) {
-            'Darwin' => ['open', self::REPOSITORY],
-            'Windows' => ['cmd', '/c', 'start', '', self::REPOSITORY],
-            default => ['xdg-open', self::REPOSITORY],
+            'Darwin' => ['open', self::SPONSOR_URL],
+            'Windows' => ['cmd', '/c', 'start', '', self::SPONSOR_URL],
+            default => ['xdg-open', self::SPONSOR_URL],
         });
 
-        $this->components->info('Thank you! '.self::REPOSITORY);
+        $this->components->info('Thank you! '.self::SPONSOR_URL);
     }
 
     private function publishConfig(): void

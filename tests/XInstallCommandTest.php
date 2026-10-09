@@ -6,7 +6,7 @@ use Darvis\ApiX\Console\Commands\XInstallCommand;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
 
-const STAR_QUESTION = 'Star darvis/api-x on GitHub? A star helps other developers find the package.';
+const SPONSOR_QUESTION = 'Buy me a beer? 🍺 Sponsoring on GitHub keeps darvis/api-x maintained.';
 
 const SUBSCRIPTION_CHOICES = [
     'none' => 'No subscription (280 characters)',
@@ -61,7 +61,7 @@ it('walks a new user through every step and writes .env', function () {
         ->expectsChoice('How should posts go out?', 'dry', MODE_CHOICES)
         ->expectsConfirmation('Add the server to .mcp.json of this project?', 'yes')
         ->expectsConfirmation('Run a dry run post now to check the setup? Nothing is sent.', 'yes')
-        ->expectsConfirmation(STAR_QUESTION, 'no')
+        ->expectsConfirmation(SPONSOR_QUESTION, 'no')
         ->expectsOutputToContain('darvis/api-x is ready.')
         ->assertSuccessful();
 

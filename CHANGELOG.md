@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- The question at the end of the interactive wizard asks to sponsor the package on GitHub ("Buy me a beer? 🍺") instead of a star. Yes opens https://github.com/sponsors/ArvidDeJong.
+
 ## [1.4.0] - 2026-09-28
 
 ### Added
