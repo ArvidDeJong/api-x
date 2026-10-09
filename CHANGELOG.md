@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-10-09
+
 ### Changed
 
 - The question at the end of the interactive wizard asks to sponsor the package on GitHub ("Buy me a beer? 🍺") instead of a star. Yes opens https://github.com/sponsors/ArvidDeJong.
@@ -71,7 +73,8 @@ First release.
 - A local MCP server with the `post-update` tool, registered as `php artisan mcp:start x` when `laravel/mcp` is installed.
 - Laravel Boost guideline and `api-x-development` skill.
 
-[Unreleased]: https://github.com/ArvidDeJong/api-x/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/ArvidDeJong/api-x/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/ArvidDeJong/api-x/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/ArvidDeJong/api-x/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/ArvidDeJong/api-x/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/ArvidDeJong/api-x/compare/v1.1.0...v1.2.0
