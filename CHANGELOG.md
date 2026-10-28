@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-10-28
+
+### Added
+
+- The Boost skill ships a reviewed SkillSpector baseline, `.skillspector-baseline.yaml`, which Boost copies into the host app with the skill. A static scan with NVIDIA SkillSpector flags four lines of the skill that are false positives: the name of the access token setting, the `.mcp.json` step of `x:install` and the rule to show every reply to the owner before sending it. The baseline gives the reason for each. It suppresses nothing by itself: run `skillspector scan .claude/skills/api-x-development --use-shipped-baseline` to apply it.
+
 ## [1.5.0] - 2026-10-09
 
 ### Changed
@@ -73,7 +79,8 @@ First release.
 - A local MCP server with the `post-update` tool, registered as `php artisan mcp:start x` when `laravel/mcp` is installed.
 - Laravel Boost guideline and `api-x-development` skill.
 
-[Unreleased]: https://github.com/ArvidDeJong/api-x/compare/v1.5.0...HEAD
+[Unreleased]: https://github.com/ArvidDeJong/api-x/compare/v1.6.0...HEAD
+[1.6.0]: https://github.com/ArvidDeJong/api-x/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/ArvidDeJong/api-x/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/ArvidDeJong/api-x/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/ArvidDeJong/api-x/compare/v1.2.0...v1.3.0

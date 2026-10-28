@@ -1,0 +1,30 @@
+# Reviewed SkillSpector findings for this skill, kept by the package author.
+# Apply with: skillspector scan <this directory> --use-shipped-baseline
+# Each rule is scoped to one rule id, this SKILL.md and the matched text.
+# The patterns use [ ] for a space so this file does not match its own rules.
+version: 2
+
+rules:
+  - id: "AS2"
+    path: "*SKILL.md"
+    message: "*mcp.json*"
+    reason: >-
+      Describes what `php artisan x:install` does: it adds this package's own MCP
+      server to the project's .mcp.json. The skill does not tell the agent to read
+      or change agent configuration.
+
+  - id: "PE3"
+    path: "*SKILL.md"
+    message: "*access[ ]token*"
+    reason: >-
+      The matched words are the name of one of the four X API keys the package is
+      configured with (X_ACCESS_TOKEN). The skill tells the agent never to put a
+      key in a URL, log line, exception message or command output; it does not
+      read credentials.
+
+  - id: "EA2"
+    path: "*SKILL.md"
+    message: "*without[ ]asking*"
+    reason: >-
+      The matched sentence is a human-in-the-loop rule: show every reply to the
+      owner before it is sent, unless the owner waived that review.
